@@ -1,6 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="Handlers\CreateUserHandler.Request.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Handlers\Users\CreateUserHandler.Request.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MyApp.Domain\MyApp.Domain.csproj" />
   </ItemGroup>
 

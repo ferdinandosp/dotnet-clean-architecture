@@ -1,6 +1,6 @@
 namespace MyApp.Domain.Core.Models
 {
-    public class BaseEntity
+    public class BaseEntity : IAggregateRoot
     {
 
     }

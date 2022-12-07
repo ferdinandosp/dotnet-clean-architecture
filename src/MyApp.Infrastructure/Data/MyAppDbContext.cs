@@ -5,6 +5,10 @@ namespace MyApp.Infrastructure.Data
 {
     public class MyAppDbContext : DbContext
     {
+        public MyAppDbContext()
+        {
+
+        }
         public MyAppDbContext(DbContextOptions<MyAppDbContext> options) : base(options)
         {
         }
@@ -16,7 +20,7 @@ namespace MyApp.Infrastructure.Data
             if (!options.IsConfigured)
             {
                 var folder = Environment.SpecialFolder.LocalApplicationData;
-                var path = Environment.GetFolderPath(folder);                
+                var path = Environment.GetFolderPath(folder);
 
                 options.UseSqlite($"Data Source=myapp.db");
             }

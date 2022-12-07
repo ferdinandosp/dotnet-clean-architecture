@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyApp.Application.Core.Repositories;
 using MyApp.Application.Core.Services;
 using MyApp.Infrastructure.Data;
-using MyApp.Infrastructure.Repositories;
 using MyApp.Infrastructure.Services;
 
 namespace MyApp.Infrastructure.DependencyResolver
@@ -15,8 +13,8 @@ namespace MyApp.Infrastructure.DependencyResolver
         {
             services.AddDbContext<MyAppDbContext>();
 
-            services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped(typeof(IBaseRepositoryAsync<>), typeof(BaseRepositoryAsync<>));
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ILoggerService, LoggerService>();
         }
