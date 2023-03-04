@@ -1,8 +1,12 @@
+using Asp.Versioning;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MediatR;
+using Microsoft.Extensions.Options;
 using MyApp.Application;
 using MyApp.Infrastructure;
+using MyApp.WebApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +29,23 @@ builder.Host.ConfigureServices(services =>
 {
     services.AddMediatR(typeof(DefaultApplicationModule).Assembly);
 });
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1.0);
+    options.ApiVersionReader = new MediaTypeApiVersionReader();
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+}).AddApiExplorer();
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddSwaggerGen(options =>
+{
+    options.OperationFilter<SwaggerDefaultValues>();
+});
+
+// TODO: Add Installers pattern.
 
 var app = builder.Build();
 
@@ -38,7 +53,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(
+        options =>
+        {
+            foreach (var description in app.DescribeApiVersions())
+            {
+                options.SwaggerEndpoint(
+                    $"/swagger/{description.GroupName}/swagger.json",
+                    description.GroupName);
+            }
+        });
 }
 
 app.UseHttpsRedirection();

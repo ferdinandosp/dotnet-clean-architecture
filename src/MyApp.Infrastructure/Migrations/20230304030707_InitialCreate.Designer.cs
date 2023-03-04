@@ -11,7 +11,7 @@ using MyApp.Infrastructure.Data;
 namespace MyApp.Infrastructure.Migrations
 {
     [DbContext(typeof(MyAppDbContext))]
-    [Migration("20221207082713_InitialCreate")]
+    [Migration("20230304030707_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -26,7 +26,8 @@ namespace MyApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreatedOn")
@@ -40,7 +41,7 @@ namespace MyApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("LastModifiedOn")

@@ -7,8 +7,8 @@ namespace MyApp.WebApi.Controllers.Users;
 public class GetAll : Controller
 {
     [HttpGet]
-    public IActionResult Index()
+    public ActionResult Index()
     {
-        return View();
+        return Ok();
     }
 }

@@ -23,7 +23,8 @@ namespace MyApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreatedOn")
@@ -37,7 +38,7 @@ namespace MyApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("LastModifiedBy")
+                    b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("LastModifiedOn")

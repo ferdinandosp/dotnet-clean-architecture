@@ -21,9 +21,9 @@ namespace MyApp.Infrastructure.Migrations
                     EmailId = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    LastModifiedBy = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true),
                     LastModifiedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
