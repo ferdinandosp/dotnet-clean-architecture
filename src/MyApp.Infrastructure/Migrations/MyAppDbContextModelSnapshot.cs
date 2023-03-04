@@ -30,11 +30,7 @@ namespace MyApp.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EmailId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FirstName")
+                    b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -44,13 +40,12 @@ namespace MyApp.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LastModifiedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");

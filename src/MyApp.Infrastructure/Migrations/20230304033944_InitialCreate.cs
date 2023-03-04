@@ -16,11 +16,10 @@ namespace MyApp.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    EmailId = table.Column<string>(type: "TEXT", nullable: false),
+                    EmailAddress = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    Role = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedOn = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "TEXT", nullable: true),

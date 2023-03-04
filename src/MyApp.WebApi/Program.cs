@@ -2,11 +2,12 @@ using Asp.Versioning;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MediatR;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using MyApp.Application;
+using MyApp.Domain.Enums;
 using MyApp.Infrastructure;
-using MyApp.WebApi;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using MyApp.WebApi.Installers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterModule(new DefaultInfrastructureModule());
-    containerBuilder.RegisterModule(new AutoMapperModule());
 });
 builder.Host.ConfigureServices(services =>
 {
@@ -37,13 +37,37 @@ builder.Services.AddApiVersioning(options =>
     options.ReportApiVersions = true;
     options.AssumeDefaultVersionWhenUnspecified = true;
 }).AddApiExplorer();
-builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddAuthentication(options =>
 {
-    options.OperationFilter<SwaggerDefaultValues>();
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = appSettings.GetSection("Jwt:Issuer").Value!,
+        ValidateIssuerSigningKey = false,
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(
+            appSettings.GetSection("Jwt:Key").Value!)),
+        ValidateLifetime = false,
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ValidateActor = false,
+    };
 });
+
+builder.Services.AddAuthorization(options =>
+{
+    foreach (var userRole in Enum.GetNames(typeof(UserRole)))
+    {
+        options.AddPolicy(userRole,
+            authBuilder => authBuilder.RequireRole(userRole));
+    }
+});
+
+builder.Services.InstallServicesInAssembly(appSettings);
 
 // TODO: Add Installers pattern.
 
@@ -67,6 +91,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
