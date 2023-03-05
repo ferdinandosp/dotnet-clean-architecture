@@ -254,3 +254,4 @@ pub/
 
 #Ignore marker-file used to know which docker files we have.
 \.vscode/
+/.sonarqube
